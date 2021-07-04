@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <DockerfileTag>ghcr.io/ac-4/xcexample.api.sometext</DockerfileTag>
   </PropertyGroup>
 
   <ItemGroup>

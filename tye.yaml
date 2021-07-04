@@ -1,0 +1,8 @@
+name: apigateway-example
+services:
+- name: sometext
+  project: ./XcExample.Api.Sometext/XcExample.Api.Sometext.csproj
+  bindings:
+  - port: 5582
+    protocol: http
+    name: http
