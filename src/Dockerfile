@@ -1,6 +1,6 @@
-FROM mcr.microsoft.com/dotnet/aspnet:5.0 AS base
+FROM mcr.microsoft.com/dotnet/aspnet:7.0 AS base
 WORKDIR /app
-EXPOSE 80
+EXPOSE 443
 
 COPY XcExample.Api.Sometext/bin/Debug/net5.0/publish/ app/
 WORKDIR /app
