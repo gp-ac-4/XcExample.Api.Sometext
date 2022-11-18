@@ -1,4 +1,6 @@
 using Microsoft.OpenApi.Models;
+using XcExample.Api.Sometext.Handlers;
+using XcExample.Api.Sometext.System;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +17,9 @@ builder.Services.AddSwaggerGen(c =>
     c.IncludeXmlComments(filePath);
 });
 
+// register injection classes
+builder.Services.AddScoped<IWords, WordDictionary>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -23,6 +28,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseStaticFiles(StaticFileConfiguration.GetNex());
 
 app.UseHttpsRedirection();
 
