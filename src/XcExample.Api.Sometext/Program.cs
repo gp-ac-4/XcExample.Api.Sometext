@@ -1,4 +1,5 @@
 using Microsoft.OpenApi.Models;
+using XcExample.Api.Sometext.Handlers;
 using XcExample.Api.Sometext.System;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,6 +16,9 @@ builder.Services.AddSwaggerGen(c =>
     var filePath = Path.Combine(System.AppContext.BaseDirectory, $"{apiInfo.Title}.xml");
     c.IncludeXmlComments(filePath);
 });
+
+// register injection classes
+builder.Services.AddScoped<IWords, WordDictionary>();
 
 var app = builder.Build();
 

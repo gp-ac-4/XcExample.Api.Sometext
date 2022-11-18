@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using System.Diagnostics;
 
 namespace XcExample.Api.Sometext.Controllers
@@ -12,13 +13,16 @@ namespace XcExample.Api.Sometext.Controllers
     public class ConcatController : ControllerBase
     {
         private readonly ILogger<ConcatController> _logger;
+        private readonly Handlers.IWords _words;
+
         /// <summary>
         /// Controller that puts text together
         /// </summary>
         /// <param name="logger"></param>
-        public ConcatController(ILogger<ConcatController> logger)
+        public ConcatController(ILogger<ConcatController> logger, Handlers.IWords words)
         {
             _logger = logger;
+            _words = words;
         }
 
         /// <summary>
@@ -28,14 +32,24 @@ namespace XcExample.Api.Sometext.Controllers
         /// <param name="word"></param>
         /// <returns></returns>
         [HttpGet]
-        public IEnumerable<string> GetTogether(Int16 id, string word)
+        public ActionResult<IEnumerable<string>> GetTogether(Int16 id, string word)
         {
             _logger.LogInformation("call to GetTogether()", id, word);
-            return new List<string>()
+            try
             {
-                $"{id} and {word}"
+                var thisWord = this._words.Lookup(id);
+                var thisIndex = this._words.Lookup(word);
+                return new List<string>()
+                {
+                    $"{thisWord} and {thisIndex}"
+                }
+                .ToArray();
             }
-            .ToArray();
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "unable to find id or word");
+                return NotFound();
+            }
         }
 
         /// <summary>
@@ -49,9 +63,11 @@ namespace XcExample.Api.Sometext.Controllers
         public IEnumerable<string> GetTogether(Int16 id, string word, Model.Sentence sentence)
         {
             _logger.LogInformation("call to GetTogether()", id, word, sentence);
+            var thisWord = this._words.Lookup(id);
+            var thisIndex = this._words.Lookup(word);
             return new List<string>()
             {
-                $"{sentence.Verb} {id} and {word} {sentence.Predicate}{sentence.Punctuation}"
+                $"{sentence.Verb} {thisWord} and {thisIndex} {sentence.Predicate}{sentence.Punctuation}"
             }
             .ToArray();
         }
