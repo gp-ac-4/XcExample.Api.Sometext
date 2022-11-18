@@ -1,4 +1,5 @@
 using Microsoft.OpenApi.Models;
+using XcExample.Api.Sometext.System;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,6 +24,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseStaticFiles(StaticFileConfiguration.GetNex());
 
 app.UseHttpsRedirection();
 
