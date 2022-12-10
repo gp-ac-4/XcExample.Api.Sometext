@@ -19,11 +19,14 @@ namespace XcExample.Api.Sometext.Controllers
         /// Controller that puts text together
         /// </summary>
         /// <param name="logger"></param>
+        /// <param name="words"></param>
         public ConcatController(ILogger<ConcatController> logger, Handlers.IWords words)
         {
             _logger = logger;
             _words = words;
         }
+
+        
 
         /// <summary>
         /// Get Some Text Together for a Party
