@@ -31,7 +31,7 @@ namespace XcExample.Api.Sometext.Controllers
         [HttpGet]
         public IEnumerable<string> Get()
         {
-            _logger.LogDebug("call to Get()");
+            _logger.LogDebug("TESTLOG: call to Get()");
             var headers = new List<string>();
             foreach (var headerPair in Request.Headers)
             {
