@@ -24,7 +24,7 @@
     <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="6.4.0" />
   </ItemGroup>
 
-  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent" Condition="'$(Configuration)' == 'Debug'">
     <Exec Command="dotnet tool restore &amp;&amp; dotnet swagger tofile --output $(OutputPath)wwwroot\ncv.json $(OutputPath)$(AssemblyName).dll v1&gt; $(OutputPath).swagger.log" />
   </Target>
 
