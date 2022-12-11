@@ -1,0 +1,213 @@
+openapi: 3.0.1
+info:
+  title: XcExample.Api.Sometext
+  version: v1
+paths:
+  '/api/{id}/GetTogether/{word}/Concat':
+    get:
+      tags:
+        - Concat
+      summary: Get Some Text Together for a Party
+      parameters:
+        - name: id
+          in: path
+          description: ''
+          required: true
+          style: simple
+          schema:
+            type: integer
+            format: int32
+        - name: word
+          in: path
+          description: ''
+          required: true
+          style: simple
+          schema:
+            minLength: 2
+            type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                type: array
+                items:
+                  type: string
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+            text/json:
+              schema:
+                type: array
+                items:
+                  type: string
+    post:
+      tags:
+        - Concat
+      summary: Get Some Text Together for a Party
+      parameters:
+        - name: id
+          in: path
+          description: word index
+          required: true
+          style: simple
+          schema:
+            type: integer
+            format: int32
+          example: 9987
+        - name: word
+          in: path
+          description: indexed word
+          required: true
+          style: simple
+          schema:
+            minLength: 2
+            type: string
+          example: orange
+      requestBody:
+        description: words and puncuation
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Sentence'
+            example:
+              verb: Chase
+              predicate: out of here
+              punctuation: '!'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/Sentence'
+            example:
+              verb: Chase
+              predicate: out of here
+              punctuation: '!'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/Sentence'
+            example:
+              verb: Chase
+              predicate: out of here
+              punctuation: '!'
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                type: array
+                items:
+                  type: string
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+            text/json:
+              schema:
+                type: array
+                items:
+                  type: string
+  /api/SomeText:
+    get:
+      tags:
+        - SomeText
+      summary: just get some text
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                type: array
+                items:
+                  type: string
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+            text/json:
+              schema:
+                type: array
+                items:
+                  type: string
+  /TestHeaders:
+    get:
+      tags:
+        - TestHeaders
+      summary: simple header exposer so you can see what is going on
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                type: array
+                items:
+                  type: string
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+            text/json:
+              schema:
+                type: array
+                items:
+                  type: string
+  /api/Words/Lookup:
+    get:
+      tags:
+        - Words
+      summary: 'lookup a word, used to illistrate optioinal parameter'
+      parameters:
+        - name: filter
+          in: query
+          description: ''
+          style: form
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                type: array
+                items:
+                  type: string
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+            text/json:
+              schema:
+                type: array
+                items:
+                  type: string
+components:
+  schemas:
+    Sentence:
+      type: object
+      properties:
+        verb:
+          type: string
+          description: Action word
+          nullable: true
+          example: Send
+        predicate:
+          type: string
+          description: last half of something to say
+          nullable: true
+          example: to the Moon
+        punctuation:
+          type: string
+          description: classify what you want to say
+          example: '!'
+      additionalProperties: false
+      description: building to say something
