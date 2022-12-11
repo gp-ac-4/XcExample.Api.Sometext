@@ -25,7 +25,8 @@
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent" Condition="'$(Configuration)' == 'Debug'">
-    <Exec Command="dotnet tool restore &amp;&amp; dotnet swagger tofile --output $(OutputPath)wwwroot\ncv.json $(OutputPath)$(AssemblyName).dll v1&gt; $(OutputPath).swagger.log" />
+    <Exec Command="dotnet tool restore" />
+	<Exec Command="dotnet swagger tofile --output $(OutputPath)wwwroot\ncv.json $(OutputPath)$(AssemblyName).dll v1" />
   </Target>
 
 </Project>
