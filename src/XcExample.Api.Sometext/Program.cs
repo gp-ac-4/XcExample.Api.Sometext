@@ -29,7 +29,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseStaticFiles(StaticFileConfiguration.GetNex());
+app.UseStaticFiles(StaticFileConfiguration.Get());
 
 app.UseHttpsRedirection();
 

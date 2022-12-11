@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
@@ -24,14 +24,9 @@
     <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="6.4.0" />
   </ItemGroup>
 
-    <Target Name="PostBuild" AfterTargets="PostBuildEvent" Condition="'$(Configuration)' == 'Debug'">
-        <Exec Command="dotnet tool restore" />
-        <Exec Command="dotnet swagger tofile --output $(OutputPath)wwwroot\ncv.json $(OutputPath)$(AssemblyName).dll v1" />
-    </Target>
-
-    <Target Name="PostBuild" AfterTargets="PostBuildEvent" Condition="'$(Configuration)' == 'Release'">
-	    <Exec Command="dotnet tool restore" />
-	    <Exec Command="dotnet swagger tofile --output $(OutputPath)wwwroot\ncv.json $(OutputPath)$(AssemblyName).dll v1" />
+    <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+		<Exec Command="dotnet tool restore" />
+        <Exec Command="dotnet swagger tofile --yaml --output $(OutputPath)wwwroot\ncv.yaml $(OutputPath)$(AssemblyName).dll v1" />
     </Target>
 
 </Project>
