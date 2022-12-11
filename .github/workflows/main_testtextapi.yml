@@ -27,12 +27,12 @@ jobs:
 
       - name: dotnet tools
         run: dotnet tool restore 
+      
+      - name: generate OAS3 static 
+        run: dotnet swagger tofile --output src/XcExample.Api.Sometext/bin/Release/net7.0/wwwroot/ncv.json src/XcExample.Api.Sometext/bin/Release/net7.0/XcExample.Api.Sometext.dll v1
 
       - name: dotnet publish
         run: dotnet publish src/XcExample.Api.Sometext.sln -c Release -o ${{env.DOTNET_ROOT}}/myapp
-
-      - name: generate OAS3 static 
-        run: dotnet swagger tofile --output ${{env.DOTNET_ROOT}}/myapp/wwwroot/ncv.json src/XcExample.Api.Sometext/bin/Release/net7.0/XcExample.Api.Sometext.dll v1
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v2
