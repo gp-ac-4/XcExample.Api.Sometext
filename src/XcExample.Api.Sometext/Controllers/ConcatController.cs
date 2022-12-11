@@ -37,7 +37,7 @@ namespace XcExample.Api.Sometext.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<string>> GetTogether(Int16 id, string word)
         {
-            _logger.LogInformation("call to GetTogether()", id, word);
+            _logger.LogInformation("TESTLOG: call to GetTogether()", id, word);
             try
             {
                 var thisWord = this._words.Lookup(id);
@@ -50,7 +50,7 @@ namespace XcExample.Api.Sometext.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "unable to find id or word");
+                _logger.LogError(ex, "TESTLOG: unable to find id or word");
                 return NotFound();
             }
         }
@@ -65,7 +65,7 @@ namespace XcExample.Api.Sometext.Controllers
         [HttpPost]
         public IEnumerable<string> GetTogether(Int16 id, string word, Model.Sentence sentence)
         {
-            _logger.LogInformation("call to GetTogether()", id, word, sentence);
+            _logger.LogInformation("TESTLOG: call to GetTogether()", id, word, sentence);
             var thisWord = this._words.Lookup(id);
             var thisIndex = this._words.Lookup(word);
             return new List<string>()

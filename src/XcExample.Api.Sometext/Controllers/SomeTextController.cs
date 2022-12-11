@@ -28,7 +28,7 @@ namespace XcExample.Api.Sometext.Controllers
         [HttpGet]
         public IEnumerable<string> Get()
         {
-            _logger.LogInformation("call to Get() log", DateTime.UtcNow.ToLongTimeString());
+            _logger.LogInformation("TESTLOG: call to Get()", DateTime.UtcNow.ToLongTimeString());
             return new List<string>()
             {
                 "Yup, a string"

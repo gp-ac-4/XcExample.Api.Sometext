@@ -32,7 +32,7 @@ namespace XcExample.Api.Sometext.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<string>> Lookup(Int16? filter = null)
         {
-            _logger.LogInformation("call to Lookup()", filter);
+            _logger.LogInformation("TESTLOG: call to Lookup()", filter);
             try
             {
                 // when no value given, give a list
