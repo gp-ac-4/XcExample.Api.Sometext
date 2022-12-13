@@ -46,3 +46,16 @@ steps:
     archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
     replaceExistingArchive: true
 
+- task: CmdLine@2
+  displayName: Veracode Pipeline Scan
+  inputs:
+    script: |
+      curl -sSO https://downloads.veracode.com/securityscan/pipeline-scan-LATEST.zip
+      unzip -o pipeline-scan-LATEST.zip
+      java -jar pipeline-scan.jar -vid $(VERACODE_API_ID) -vkey $(VERACODE_API_KEY) -f '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip' --json_output_file='$(Pipeline.Workspace)/baseline.json' || true
+
+- task: PublishPipelineArtifact@1
+  inputs:
+    targetPath: '$(Pipeline.Workspace)/baseline.json'
+    artifact: 'veracode_baseline'
+    publishLocation: 'pipeline'
