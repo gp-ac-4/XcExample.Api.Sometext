@@ -4,7 +4,11 @@
 # https://docs.microsoft.com/azure/devops/pipelines/apps/aspnet/build-aspnet-4
 
 trigger:
-- main
+  branches:
+    include:
+      - '*'
+    exclude:
+      - main
 
 pool:
   vmImage: 'windows-latest'
@@ -33,16 +37,25 @@ steps:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
 
+- task: DownloadPipelineArtifact@2
+  inputs:
+    buildType: 'specific'
+    project: '06f2c163-e96c-40ad-bf3e-d087d91e45a6'
+    definition: '4'
+    buildVersionToDownload: 'latest'
+    artifactName: 'veracode_baseline'
+    targetPath: '$(Pipeline.Workspace)'
+
 - task: CmdLine@2
   displayName: Veracode Pipeline Scan
   inputs:
     script: |
       curl -sSO https://downloads.veracode.com/securityscan/pipeline-scan-LATEST.zip
       unzip -o pipeline-scan-LATEST.zip
-      java -jar pipeline-scan.jar -vid $(VERACODE_API_ID) -vkey $(VERACODE_API_KEY) -f $(build.artifactStagingDirectory)\WebApp_$(Build.BuildId).zip --json_output_file=veracode_baseline.json || true
+      java -jar pipeline-scan.jar -vid $(VERACODE_API_ID) -vkey $(VERACODE_API_KEY) -f $(build.artifactStagingDirectory)\WebApp_$(Build.BuildId).zip --baseline_file=veracode_baseline.json || true
 
 - task: PublishPipelineArtifact@1
   inputs:
-    targetPath: 'veracode_baseline.json'
-    artifact: 'veracode_baseline'
+    targetPath: 'results.json'
+    artifact: 'veracode_results'
     publishLocation: 'pipeline'
