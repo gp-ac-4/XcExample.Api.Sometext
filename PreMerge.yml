@@ -19,6 +19,18 @@ variables:
   buildConfiguration: 'Debug'
 
 steps:
+
+- task: DownloadPipelineArtifact@2
+  inputs:
+    buildType: 'specific'
+    project: '06f2c163-e96c-40ad-bf3e-d087d91e45a6'
+    definition: '4'
+    specificBuildWithTriggering: true
+    buildVersionToDownload: 'latest'
+    artifactName: 'veracode_baseline'
+    itemPattern: 'veracode_baseline.json'
+    targetPath: '$(Pipeline.Workspace)'
+
 - task: NuGetToolInstaller@1
 
 - task: NuGetCommand@2
@@ -36,12 +48,6 @@ steps:
   inputs:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
-
-- task: DownloadPipelineArtifact@2
-  inputs:
-    buildType: 'current'
-    artifactName: 'veracode_baseline'
-    targetPath: '$(Pipeline.Workspace)'
 
 - task: CmdLine@2
   displayName: Veracode Pipeline Scan
