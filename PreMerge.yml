@@ -1,4 +1,4 @@
-# ASP.NET
+=-# ASP.NET
 # Build and test ASP.NET projects.
 # Add steps that publish symbols, save build artifacts, deploy, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/apps/aspnet/build-aspnet-4
@@ -33,24 +33,16 @@ steps:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
 
-- task: ArchiveFiles@2
-  inputs:
-    rootFolderOrFile: '$(Build.BinariesDirectory)'
-    includeRootFolder: true
-    archiveType: 'zip'
-    archiveFile: '$(Pipeline.Workspace)/$(Build.BuildId).zip'
-    replaceExistingArchive: true
-
 - task: CmdLine@2
   displayName: Veracode Pipeline Scan
   inputs:
     script: |
       curl -sSO https://downloads.veracode.com/securityscan/pipeline-scan-LATEST.zip
       unzip -o pipeline-scan-LATEST.zip
-      java -jar pipeline-scan.jar -vid $(VERACODE_API_ID) -vkey $(VERACODE_API_KEY) -f $(build.artifactStagingDirectory)\WebApp_$(Build.BuildId).zip --json_output_file=$(Pipeline.Workspace)/baseline.json || true
+      java -jar pipeline-scan.jar -vid $(VERACODE_API_ID) -vkey $(VERACODE_API_KEY) -f $(build.artifactStagingDirectory)\WebApp_$(Build.BuildId).zip --json_output_file=$(build.artifactStagingDirectory)/baseline.json || true
 
 - task: PublishPipelineArtifact@1
   inputs:
-    targetPath: '$(Pipeline.Workspace)/baseline.json'
+    targetPath: '$(build.artifactStagingDirectory)\baseline.json'
     artifact: 'veracode_baseline'
     publishLocation: 'pipeline'
