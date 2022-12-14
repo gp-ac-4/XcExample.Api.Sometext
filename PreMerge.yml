@@ -39,10 +39,7 @@ steps:
 
 - task: DownloadPipelineArtifact@2
   inputs:
-    buildType: 'specific'
-    project: '06f2c163-e96c-40ad-bf3e-d087d91e45a6'
-    definition: '4'
-    buildVersionToDownload: 'latest'
+    buildType: 'current'
     artifactName: 'veracode_baseline'
     targetPath: '$(Pipeline.Workspace)'
 
