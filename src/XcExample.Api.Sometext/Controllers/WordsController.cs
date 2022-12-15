@@ -4,7 +4,7 @@ using XcExample.Api.Sometext.Handlers;
 namespace XcExample.Api.Sometext.Controllers
 {
     /// <summary>
-    /// stuff with words
+    /// fun stuff with words
     /// </summary>
     [ApiController]
     [Route("api/[controller]/[action]")]
