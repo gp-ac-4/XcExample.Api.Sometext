@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Diagnostics;
+using System.Web;
 
 namespace XcExample.Api.Sometext.Controllers
 {
@@ -37,7 +38,7 @@ namespace XcExample.Api.Sometext.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<string>> GetTogether(Int16 id, string word)
         {
-            _logger.LogInformation("TESTLOG: call to GetTogether()", id, word);
+            _logger.LogInformation("TESTLOG: call to GetTogether()", id, HttpUtility.HtmlEncode(word));
             try
             {
                 var thisWord = this._words.Lookup(id);
@@ -65,7 +66,7 @@ namespace XcExample.Api.Sometext.Controllers
         [HttpPost]
         public IEnumerable<string> GetTogether(Int16 id, string word, Model.Sentence sentence)
         {
-            _logger.LogInformation("TESTLOG: call to GetTogether()", id, word, sentence);
+            _logger.LogInformation("TESTLOG: call to GetTogether()", id, HttpUtility.HtmlEncode(word), sentence);
             var thisWord = this._words.Lookup(id);
             var thisIndex = this._words.Lookup(word);
             return new List<string>()
