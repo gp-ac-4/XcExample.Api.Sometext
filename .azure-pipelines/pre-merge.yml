@@ -1,0 +1,63 @@
+# ASP.NET
+# Build and test ASP.NET projects.
+# Add steps that publish symbols, save build artifacts, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/apps/aspnet/build-aspnet-4
+
+trigger:
+  branches:
+    include:
+      - '*'
+    exclude:
+      - main
+
+pool:
+  vmImage: 'windows-latest'
+
+variables:
+  solution: '**/*.sln'
+  buildPlatform: 'Any CPU'
+  buildConfiguration: 'Debug'
+
+steps:
+- task: NuGetToolInstaller@1
+
+- task: NuGetCommand@2
+  inputs:
+    restoreSolution: '$(solution)'
+
+- task: VSBuild@1
+  inputs:
+    solution: '$(solution)'
+    msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:DesktopBuildPackageLocation="$(build.artifactStagingDirectory)\WebApp_$(Build.BuildId).zip" /p:DeployIisAppPath="Default Web Site"'
+    platform: '$(buildPlatform)'
+    configuration: '$(buildConfiguration)'
+
+- task: VSTest@2
+  inputs:
+    platform: '$(buildPlatform)'
+    configuration: '$(buildConfiguration)'
+
+- task: DownloadPipelineArtifact@2
+  inputs:
+    buildType: 'specific'
+    project: '06f2c163-e96c-40ad-bf3e-d087d91e45a6'
+    definition: '4'
+    specificBuildWithTriggering: true
+    buildVersionToDownload: 'latest'
+    artifactName: 'veracode_baseline'
+    itemPattern: 'veracode_baseline.json'
+    targetPath: '$(Pipeline.Workspace)'
+
+- task: CmdLine@2
+  displayName: Veracode Pipeline Scan
+  inputs:
+    script: |
+      curl -sSO https://downloads.veracode.com/securityscan/pipeline-scan-LATEST.zip
+      unzip -o pipeline-scan-LATEST.zip
+      java -jar pipeline-scan.jar -vid $(VERACODE_API_ID) -vkey $(VERACODE_API_KEY) -f $(build.artifactStagingDirectory)\WebApp_$(Build.BuildId).zip --baseline_file=$(Pipeline.Workspace)\veracode_baseline.json
+
+- task: PublishPipelineArtifact@1
+  inputs:
+    targetPath: 'results.json'
+    artifact: 'veracode_results'
+    publishLocation: pipeline

@@ -1,2 +1,4 @@
 # XcExample.Api.Sometext
-a project for testing api integration
+
+A project for testing API testing solutions. 
+Scan this with your API DAST.

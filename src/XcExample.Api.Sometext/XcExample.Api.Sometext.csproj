@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
@@ -11,15 +11,28 @@
 
   <ItemGroup>
     <None Include="..\.editorconfig" Link=".editorconfig" />
-    <None Include="wwwroot\eYcXR3ZmGqaioPtwdMvhj6.nex">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.0" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.17.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore.Newtonsoft" Version="6.4.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="6.4.0" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="wwwroot\eYcXR3ZmGqaioPtwdMvhj6.nex">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\ncv.yaml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+    <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+		<Exec Command="dotnet tool restore" />
+        <Exec Command="dotnet swagger tofile --yaml --output $(OutputPath)wwwroot\ncv.yaml $(OutputPath)$(AssemblyName).dll v1" />
+    </Target>
 
 </Project>
